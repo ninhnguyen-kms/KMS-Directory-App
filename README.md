@@ -1,50 +1,134 @@
-# Welcome to your Expo app 👋
+# KMS Directory App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile application for managing and accessing KMS employee contacts and groups.
 
-## Get started
+## Features
 
-1. Install dependencies
+### 🔐 Authentication
+- **Login/Logout**: Secure authentication with KMS HRM API
+- **Demo Mode**: Use `demo/demo` credentials for testing
 
+### 👥 Contact Management
+- **List Contacts**: View all contacts with search functionality
+- **Search Contacts**: Find contacts by name, email, phone, department, or position
+- **Contact Details**: View comprehensive contact information
+- **Update Contacts**: Modify contact data (synced with API when authenticated)
+- **Contact Actions**:
+  - 📞 Call contact
+  - ✉️ Send email
+  - 💬 Send SMS
+  - 📤 Share contact (vCard format)
+  - 📱 Add to phone contacts
+
+### 👨‍👩‍👧‍👦 Group Management
+- **Create Groups**: Organize contacts into custom groups
+- **Add/Remove Members**: Manage group membership
+- **List Groups**: View all created groups and their members
+- **Delete Groups**: Remove groups when no longer needed
+
+### 💾 Local Storage
+- **Offline Support**: All data cached locally for offline access
+- **Smart Sync**: API calls only when needed or manually triggered
+- **Data Persistence**: Contacts and groups saved on device
+
+
+## Demo Instructions
+
+### Quick Start with Demo Data
+1. Open the app
+2. Go to the Profile tab
+3. Tap "Sign In"
+4. Use credentials:
+   - Username: `demo`
+   - Password: `demo`
+5. Explore the sample contacts and groups
+
+### Features to Test
+
+#### Contacts Tab
+- Browse the contact list
+- Use the search bar to find contacts
+- Tap on a contact to view details
+- Try the action buttons (Call, Email, SMS, Share, Add to Phone)
+- Pull down to refresh the list
+
+#### Groups Tab
+- View existing groups
+- Tap "Create Group" to add a new group
+- Tap on a group to view members
+- Add/remove members from groups
+- Delete groups you no longer need
+
+#### Profile Tab
+- View your profile information
+- See contact and group statistics
+- Sign out when done
+
+## Technical Stack
+
+- **Framework**: React Native with Expo
+- **Navigation**: Expo Router
+- **State Management**: React Context + useReducer
+- **Storage**: AsyncStorage for local data persistence
+- **HTTP Client**: Axios for API calls
+- **Contacts**: expo-contacts for phone integration
+- **Sharing**: expo-sharing for contact sharing
+
+## Project Structure
+
+```
+├── app/                     # Expo Router screens
+│   ├── (tabs)/             # Tab navigation screens
+│   │   ├── index.tsx       # Contacts screen
+│   │   ├── groups.tsx      # Groups screen
+│   │   └── profile.tsx     # Profile/Login screen
+│   └── _layout.tsx         # Root layout
+├── lib/                    # Core services
+│   ├── api.ts             # KMS API service
+│   ├── storage.ts         # Local storage service
+│   ├── contactActions.ts  # Contact sharing/actions
+│   └── sampleData.ts      # Demo data
+├── context/               # React context
+│   └── AppContext.tsx     # Global app state
+├── types/                 # TypeScript types
+│   └── index.ts           # Type definitions
+└── components/            # Reusable UI components
+```
+
+## Installation
+
+1. Clone the repository
+2. Install dependencies:
    ```bash
    npm install
    ```
-
-2. Start the app
-
+3. Start the development server:
    ```bash
-   npx expo start
+   npm start
    ```
+4. Use Expo Go app to scan the QR code
 
-In the output, you'll find options to open the app in a
+## Real API Usage
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+To use with real KMS HRM API:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+1. Implement the actual login endpoint in `lib/api.ts`
+2. Update the contact data transformation to match actual API response
+3. Remove or modify the demo login credentials
+4. Configure proper authentication token handling
 
-## Get a fresh project
+## Dependencies
 
-When you're ready, run:
+- `@react-native-async-storage/async-storage`: Local storage
+- `expo-contacts`: Phone contacts integration
+- `expo-sharing`: File sharing capabilities
+- `axios`: HTTP client
+- `react-native-url-polyfill`: URL polyfill for React Native
 
-```bash
-npm run reset-project
-```
+## Notes
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Contact data is stored locally and only synced when needed
+- The app works offline after initial data load
+- Demo mode provides realistic sample data for testing
+- All contact actions integrate with native phone capabilities
+- Groups are managed locally and can be synced with future API endpoints
