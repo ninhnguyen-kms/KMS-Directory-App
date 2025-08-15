@@ -5,7 +5,7 @@ import { Colors } from "@/constants/Colors";
 import { useApp } from "@/context/AppContext";
 import { contactActions } from "@/lib/contactActions";
 import { Contact } from "@/types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   Modal,
@@ -29,9 +29,9 @@ export default function ContactsScreen() {
   } = useApp();
   const [showContactDetails, setShowContactDetails] = useState(false);
 
-  // useEffect(() => {
-  //   loadContacts();
-  // }, [loadContacts]);
+  useEffect(() => {
+    loadContacts();
+  }, []);
 
   const handleContactPress = (contact: Contact) => {
     selectContact(contact);

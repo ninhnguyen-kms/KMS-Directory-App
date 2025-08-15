@@ -16,7 +16,7 @@ export interface Group {
   id: string;
   name: string;
   description?: string;
-  members: string[]; // Array of contact IDs
+  members: string[];
   createdAt: Date;
   updatedAt: Date;
 }

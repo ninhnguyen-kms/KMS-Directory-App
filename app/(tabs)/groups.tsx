@@ -136,23 +136,30 @@ export default function GroupsScreen() {
       !state.selectedGroup!.members.includes(contact.id)
     );
   };
-
+  console.log("Available contacts:", getAvailableContacts());
   const renderGroupItem = ({ item }: { item: Group }) => (
     <TouchableOpacity
-      style={[styles.groupItem, { backgroundColor: Colors['light'].background }]}
+      style={[
+        styles.groupItem,
+        { backgroundColor: Colors["light"].background },
+      ]}
       onPress={() => handleGroupPress(item)}
     >
       <View style={styles.groupInfo}>
-        <View style={[styles.groupIcon, { backgroundColor: Colors['light'].tint }]}>
+        <View
+          style={[styles.groupIcon, { backgroundColor: Colors["light"].tint }]}
+        >
           <IconSymbol name="person.3.fill" size={24} color="white" />
         </View>
         <View style={styles.groupDetails}>
           <ThemedText style={styles.groupName}>{item.name}</ThemedText>
           <ThemedText style={styles.groupSubtitle}>
-            {item.members.length} member{item.members.length !== 1 ? 's' : ''}
+            {item.members.length} member{item.members.length !== 1 ? "s" : ""}
           </ThemedText>
           {item.description && (
-            <ThemedText style={styles.groupDescription}>{item.description}</ThemedText>
+            <ThemedText style={styles.groupDescription}>
+              {item.description}
+            </ThemedText>
           )}
         </View>
       </View>
@@ -161,18 +168,29 @@ export default function GroupsScreen() {
 
   const renderContactItem = ({ item }: { item: Contact }) => (
     <TouchableOpacity
-      style={[styles.contactItem, { backgroundColor: Colors[ 'light'].background }]}
+      style={[
+        styles.contactItem,
+        { backgroundColor: Colors["light"].background },
+      ]}
       onPress={() => handleAddMember(item.id)}
     >
       <View style={styles.contactInfo}>
-        <View style={[styles.avatar, { backgroundColor: Colors[ 'light'].tint }]}>
+        <View
+          style={[styles.avatar, { backgroundColor: Colors["light"].tint }]}
+        >
           <ThemedText style={styles.avatarText}>
-            {item.firstName.charAt(0)}{item.lastName.charAt(0)}
+            {item.firstName.charAt(0)}
+            {item.lastName.charAt(0)}
           </ThemedText>
         </View>
         <View style={styles.contactDetails}>
           <ThemedText style={styles.contactName}>{item.fullName}</ThemedText>
-          <ThemedText style={styles.contactSubtitle}>{item.position}</ThemedText>
+          <ThemedText style={styles.contactName}>
+            {item.phone || "N/A"}
+          </ThemedText>
+          <ThemedText style={styles.contactSubtitle}>
+            {item.position}
+          </ThemedText>
         </View>
       </View>
     </TouchableOpacity>

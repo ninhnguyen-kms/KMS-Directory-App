@@ -102,11 +102,29 @@ A React Native mobile application for managing and accessing KMS employee contac
    ```bash
    npm install
    ```
-3. Start the development server:
+3. Set up environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+   Edit `.env` and add your actual values:
+   ```
+   AUTH_TOKEN=your_jwt_token_here
+   API_BASE_URL=https://hr.kms-technology.com/api
+   ```
+4. Start the development server:
    ```bash
    npm start
    ```
-4. Use Expo Go app to scan the QR code
+5. Use Expo Go app to scan the QR code
+
+## Environment Variables
+
+The app uses environment variables to store sensitive configuration:
+
+- `AUTH_TOKEN`: Your JWT authentication token from KMS HRM API
+- `API_BASE_URL`: The base URL for the KMS HRM API
+
+**Important**: Never commit the `.env` file to version control. The `.env.example` file shows the required structure.
 
 ## Real API Usage
 
