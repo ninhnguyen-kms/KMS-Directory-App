@@ -1,12 +1,10 @@
 import { APIResponse, AuthUser, Contact, LoginCredentials } from '@/types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 import "react-native-url-polyfill/auto";
-
-const BASE_URL = process.env.API_BASE_URL;
-console.log("API_BASE_URL:", BASE_URL);
-console.log("AUTH_TOKEN:", process.env.AUTH_TOKEN);
+const API_BASE_URL = "https://api.example.com";
+const AUTH_TOKEN = "1"; // Fallback to environment variable if not set
+const BASE_URL = API_BASE_URL;
 class KMSAPIService {
   private token: string | null = null;
 
@@ -22,12 +20,12 @@ class KMSAPIService {
         this.token = storedToken;
       } else {
         // Fallback to environment variable if no stored token
-        this.token = process.env.AUTH_TOKEN || null;
+        this.token = AUTH_TOKEN || null;
       }
     } catch (error) {
       console.error("Error loading token:", error);
       // Fallback to environment variable in case of error
-      this.token = process.env.AUTH_TOKEN || null;
+      this.token = AUTH_TOKEN || null;
     }
   }
 
