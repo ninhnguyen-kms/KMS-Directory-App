@@ -278,7 +278,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const shouldSync = (await localStorage.shouldSyncContacts()) || true;
       if (shouldSync && kmsAPI.isAuthenticated()) {
         const response = await kmsAPI.fetchContacts();
-
         if (response.success && response.data) {
           await localStorage.saveContacts(response.data);
           dispatch({ type: "SET_CONTACTS", payload: response.data });
