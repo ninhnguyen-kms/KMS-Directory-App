@@ -211,7 +211,6 @@ class ContactActionsService {
   // Copy text to clipboard (you might want to install @react-native-clipboard/clipboard)
   private async copyToClipboard(text: string): Promise<void> {
     try {
-      console.log("Copying to clipboard:", text);
       Alert.alert("Copied", "Contact information copied to clipboard");
     } catch (error) {
       console.error("Error copying to clipboard:", error);
