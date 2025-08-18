@@ -19,22 +19,21 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function GroupsScreen() {
-  
-  const { 
-    state, 
-    loadGroups, 
-    createGroup, 
-    addUserToGroup, 
-    removeUserFromGroup, 
+  const {
+    state,
+    loadGroups,
+    createGroup,
+    addUserToGroup,
+    removeUserFromGroup,
     deleteGroup,
-    selectGroup 
+    selectGroup,
   } = useApp();
-  
+
   const [showCreateGroup, setShowCreateGroup] = useState(false);
   const [showGroupDetails, setShowGroupDetails] = useState(false);
   const [showAddMember, setShowAddMember] = useState(false);
-  const [newGroupName, setNewGroupName] = useState('');
-  const [newGroupDescription, setNewGroupDescription] = useState('');
+  const [newGroupName, setNewGroupName] = useState("");
+  const [newGroupDescription, setNewGroupDescription] = useState("");
 
   useEffect(() => {
     loadGroups();
@@ -42,19 +41,22 @@ export default function GroupsScreen() {
 
   const handleCreateGroup = async () => {
     if (!newGroupName.trim()) {
-      Alert.alert('Error', 'Please enter a group name');
+      Alert.alert("Error", "Please enter a group name");
       return;
     }
 
     try {
-      await createGroup(newGroupName.trim(), newGroupDescription.trim() || undefined);
-      setNewGroupName('');
-      setNewGroupDescription('');
+      await createGroup(
+        newGroupName.trim(),
+        newGroupDescription.trim() || undefined
+      );
+      setNewGroupName("");
+      setNewGroupDescription("");
       setShowCreateGroup(false);
-      Alert.alert('Success', 'Group created successfully');
+      Alert.alert("Success", "Group created successfully");
     } catch (error: any) {
-      console.error('Create group error:', error);
-      Alert.alert('Error', 'Failed to create group');
+      console.error("Create group error:", error);
+      Alert.alert("Error", "Failed to create group");
     }
   };
 
@@ -69,10 +71,10 @@ export default function GroupsScreen() {
     try {
       await addUserToGroup(state.selectedGroup.id, contactId);
       setShowAddMember(false);
-      Alert.alert('Success', 'Member added to group');
+      Alert.alert("Success", "Member added to group");
     } catch (error: any) {
-      console.error('Add member error:', error);
-      Alert.alert('Error', 'Failed to add member');
+      console.error("Add member error:", error);
+      Alert.alert("Error", "Failed to add member");
     }
   };
 
@@ -80,22 +82,22 @@ export default function GroupsScreen() {
     if (!state.selectedGroup) return;
 
     Alert.alert(
-      'Remove Member',
-      'Are you sure you want to remove this member from the group?',
+      "Remove Member",
+      "Are you sure you want to remove this member from the group?",
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: "Cancel", style: "cancel" },
         {
-          text: 'Remove',
-          style: 'destructive',
+          text: "Remove",
+          style: "destructive",
           onPress: async () => {
             try {
               await removeUserFromGroup(state.selectedGroup!.id, contactId);
             } catch (error: any) {
-              console.error('Remove member error:', error);
-              Alert.alert('Error', 'Failed to remove member');
+              console.error("Remove member error:", error);
+              Alert.alert("Error", "Failed to remove member");
             }
-          }
-        }
+          },
+        },
       ]
     );
   };
@@ -104,55 +106,61 @@ export default function GroupsScreen() {
     if (!state.selectedGroup) return;
 
     Alert.alert(
-      'Delete Group',
-      'Are you sure you want to delete this group? This action cannot be undone.',
+      "Delete Group",
+      "Are you sure you want to delete this group? This action cannot be undone.",
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: "Cancel", style: "cancel" },
         {
-          text: 'Delete',
-          style: 'destructive',
+          text: "Delete",
+          style: "destructive",
           onPress: async () => {
             try {
               await deleteGroup(state.selectedGroup!.id);
               setShowGroupDetails(false);
-              Alert.alert('Success', 'Group deleted successfully');
+              Alert.alert("Success", "Group deleted successfully");
             } catch (error: any) {
-              console.error('Delete group error:', error);
-              Alert.alert('Error', 'Failed to delete group');
+              console.error("Delete group error:", error);
+              Alert.alert("Error", "Failed to delete group");
             }
-          }
-        }
+          },
+        },
       ]
     );
   };
 
   const getContactById = (contactId: string): Contact | undefined => {
-    return state.contacts.find(contact => contact.id === contactId);
+    return state.contacts.find((contact) => contact.id === contactId);
   };
 
   const getAvailableContacts = (): Contact[] => {
     if (!state.selectedGroup) return state.contacts;
-    return state.contacts.filter(contact => 
-      !state.selectedGroup!.members.includes(contact.id)
+    return state.contacts.filter(
+      (contact) => !state.selectedGroup!.members.includes(contact.id)
     );
   };
-
   const renderGroupItem = ({ item }: { item: Group }) => (
     <TouchableOpacity
-      style={[styles.groupItem, { backgroundColor: Colors['light'].background }]}
+      style={[
+        styles.groupItem,
+        { backgroundColor: Colors["light"].background },
+      ]}
       onPress={() => handleGroupPress(item)}
     >
       <View style={styles.groupInfo}>
-        <View style={[styles.groupIcon, { backgroundColor: Colors['light'].tint }]}>
+        <View
+          style={[styles.groupIcon, { backgroundColor: Colors["light"].tint }]}
+        >
           <IconSymbol name="person.3.fill" size={24} color="white" />
         </View>
         <View style={styles.groupDetails}>
           <ThemedText style={styles.groupName}>{item.name}</ThemedText>
           <ThemedText style={styles.groupSubtitle}>
-            {item.members.length} member{item.members.length !== 1 ? 's' : ''}
+            {item.members.length} member{item.members.length !== 1 ? "s" : ""}
           </ThemedText>
           {item.description && (
-            <ThemedText style={styles.groupDescription}>{item.description}</ThemedText>
+            <ThemedText style={styles.groupDescription}>
+              {item.description}
+            </ThemedText>
           )}
         </View>
       </View>
@@ -161,18 +169,29 @@ export default function GroupsScreen() {
 
   const renderContactItem = ({ item }: { item: Contact }) => (
     <TouchableOpacity
-      style={[styles.contactItem, { backgroundColor: Colors[ 'light'].background }]}
+      style={[
+        styles.contactItem,
+        { backgroundColor: Colors["light"].background },
+      ]}
       onPress={() => handleAddMember(item.id)}
     >
       <View style={styles.contactInfo}>
-        <View style={[styles.avatar, { backgroundColor: Colors[ 'light'].tint }]}>
+        <View
+          style={[styles.avatar, { backgroundColor: Colors["light"].tint }]}
+        >
           <ThemedText style={styles.avatarText}>
-            {item.firstName.charAt(0)}{item.lastName.charAt(0)}
+            {item.firstName.charAt(0)}
+            {item.lastName.charAt(0)}
           </ThemedText>
         </View>
         <View style={styles.contactDetails}>
           <ThemedText style={styles.contactName}>{item.fullName}</ThemedText>
-          <ThemedText style={styles.contactSubtitle}>{item.position}</ThemedText>
+          <ThemedText style={styles.contactName}>
+            {item.phone || "N/A"}
+          </ThemedText>
+          <ThemedText style={styles.contactSubtitle}>
+            {item.position}
+          </ThemedText>
         </View>
       </View>
     </TouchableOpacity>
@@ -184,18 +203,28 @@ export default function GroupsScreen() {
 
     return (
       <TouchableOpacity
-        style={[styles.memberItem, { backgroundColor: Colors[ 'light'].background }]}
+        style={[
+          styles.memberItem,
+          { backgroundColor: Colors["light"].background },
+        ]}
         onPress={() => handleRemoveMember(item)}
       >
         <View style={styles.memberInfo}>
-          <View style={[styles.avatar, { backgroundColor: Colors[ 'light'].tint }]}>
+          <View
+            style={[styles.avatar, { backgroundColor: Colors["light"].tint }]}
+          >
             <ThemedText style={styles.avatarText}>
-              {contact.firstName.charAt(0)}{contact.lastName.charAt(0)}
+              {contact.firstName.charAt(0)}
+              {contact.lastName.charAt(0)}
             </ThemedText>
           </View>
           <View style={styles.memberDetails}>
-            <ThemedText style={styles.memberName}>{contact.fullName}</ThemedText>
-            <ThemedText style={styles.memberSubtitle}>{contact.position}</ThemedText>
+            <ThemedText style={styles.memberName}>
+              {contact.fullName}
+            </ThemedText>
+            <ThemedText style={styles.memberSubtitle}>
+              {contact.position}
+            </ThemedText>
           </View>
           <IconSymbol name="minus.circle" size={20} color="#ff4444" />
         </View>
@@ -231,20 +260,26 @@ export default function GroupsScreen() {
           <View style={styles.inputSection}>
             <ThemedText style={styles.inputLabel}>Group Name</ThemedText>
             <TextInput
-              style={[styles.textInput, { color: Colors[ 'light'].text }]}
+              style={[styles.textInput, { color: Colors["light"].text }]}
               placeholder="Enter group name"
-              placeholderTextColor={Colors[ 'light'].text}
+              placeholderTextColor={Colors["light"].text}
               value={newGroupName}
               onChangeText={setNewGroupName}
             />
           </View>
 
           <View style={styles.inputSection}>
-            <ThemedText style={styles.inputLabel}>Description (Optional)</ThemedText>
+            <ThemedText style={styles.inputLabel}>
+              Description (Optional)
+            </ThemedText>
             <TextInput
-              style={[styles.textInput, styles.textArea, { color: Colors[ 'light'].text }]}
+              style={[
+                styles.textInput,
+                styles.textArea,
+                { color: Colors["light"].text },
+              ]}
               placeholder="Enter group description"
-              placeholderTextColor={Colors[ 'light'].text}
+              placeholderTextColor={Colors["light"].text}
               value={newGroupDescription}
               onChangeText={setNewGroupDescription}
               multiline
@@ -274,7 +309,7 @@ export default function GroupsScreen() {
               style={styles.closeButton}
               onPress={() => setShowGroupDetails(false)}
             >
-              <IconSymbol name="xmark" size={24} color={Colors[ 'light'].text} />
+              <IconSymbol name="xmark" size={24} color={Colors["light"].text} />
             </TouchableOpacity>
             <ThemedText style={styles.modalTitle}>{group.name}</ThemedText>
             <TouchableOpacity
@@ -288,7 +323,9 @@ export default function GroupsScreen() {
           <ScrollView style={styles.modalContent}>
             {group.description && (
               <View style={styles.descriptionSection}>
-                <ThemedText style={styles.descriptionText}>{group.description}</ThemedText>
+                <ThemedText style={styles.descriptionText}>
+                  {group.description}
+                </ThemedText>
               </View>
             )}
 
@@ -301,8 +338,17 @@ export default function GroupsScreen() {
                   style={styles.addMemberButton}
                   onPress={() => setShowAddMember(true)}
                 >
-                  <IconSymbol name="plus" size={20} color={Colors[ 'light'].tint} />
-                  <ThemedText style={[styles.addMemberText, { color: Colors[ 'light'].tint }]}>
+                  <IconSymbol
+                    name="plus"
+                    size={20}
+                    color={Colors["light"].tint}
+                  />
+                  <ThemedText
+                    style={[
+                      styles.addMemberText,
+                      { color: Colors["light"].tint },
+                    ]}
+                  >
                     Add Member
                   </ThemedText>
                 </TouchableOpacity>
@@ -315,7 +361,9 @@ export default function GroupsScreen() {
                 scrollEnabled={false}
                 ListEmptyComponent={
                   <View style={styles.emptyMembers}>
-                    <ThemedText style={styles.emptyText}>No members in this group</ThemedText>
+                    <ThemedText style={styles.emptyText}>
+                      No members in this group
+                    </ThemedText>
                   </View>
                 }
               />
@@ -352,7 +400,9 @@ export default function GroupsScreen() {
           style={styles.modalContent}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <ThemedText style={styles.emptyText}>All contacts are already in this group</ThemedText>
+              <ThemedText style={styles.emptyText}>
+                All contacts are already in this group
+              </ThemedText>
             </View>
           }
         />
@@ -364,7 +414,9 @@ export default function GroupsScreen() {
     return (
       <ThemedView style={styles.container}>
         <View style={styles.loginPrompt}>
-          <ThemedText style={styles.loginPromptText}>Please login to view groups</ThemedText>
+          <ThemedText style={styles.loginPromptText}>
+            Please login to view groups
+          </ThemedText>
         </View>
       </ThemedView>
     );
@@ -376,11 +428,16 @@ export default function GroupsScreen() {
         <View style={styles.header}>
           <ThemedText style={styles.title}>Groups</ThemedText>
           <TouchableOpacity
-            style={[styles.createButton, { backgroundColor: Colors[ 'light'].tint }]}
+            style={[
+              styles.createButton,
+              { backgroundColor: Colors["light"].tint },
+            ]}
             onPress={() => setShowCreateGroup(true)}
           >
             <IconSymbol name="plus" size={20} color="white" />
-            <ThemedText style={styles.createButtonText}>Create Group</ThemedText>
+            <ThemedText style={styles.createButtonText}>
+              Create Group
+            </ThemedText>
           </TouchableOpacity>
         </View>
 
@@ -398,7 +455,7 @@ export default function GroupsScreen() {
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
               <ThemedText style={styles.emptyText}>
-                {state.isLoading ? 'Loading groups...' : 'No groups found'}
+                {state.isLoading ? "Loading groups..." : "No groups found"}
               </ThemedText>
             </View>
           }
@@ -417,25 +474,25 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 16,
   },
   title: {
     fontSize: 32,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   createButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 8,
   },
   createButtonText: {
-    color: 'white',
-    fontWeight: '600',
+    color: "white",
+    fontWeight: "600",
     marginLeft: 4,
   },
   list: {
@@ -444,18 +501,18 @@ const styles = StyleSheet.create({
   groupItem: {
     padding: 16,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: "#E0E0E0",
   },
   groupInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   groupIcon: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 12,
   },
   groupDetails: {
@@ -463,7 +520,7 @@ const styles = StyleSheet.create({
   },
   groupName: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 2,
   },
   groupSubtitle: {
@@ -477,17 +534,17 @@ const styles = StyleSheet.create({
   },
   errorContainer: {
     padding: 16,
-    backgroundColor: '#ffebee',
+    backgroundColor: "#ffebee",
     margin: 16,
     borderRadius: 8,
   },
   errorText: {
-    color: '#c62828',
-    textAlign: 'center',
+    color: "#c62828",
+    textAlign: "center",
   },
   emptyContainer: {
     padding: 32,
-    alignItems: 'center',
+    alignItems: "center",
   },
   emptyText: {
     fontSize: 16,
@@ -495,32 +552,32 @@ const styles = StyleSheet.create({
   },
   loginPrompt: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 32,
   },
   loginPromptText: {
     fontSize: 18,
-    textAlign: 'center',
+    textAlign: "center",
     opacity: 0.7,
   },
   modalContainer: {
     flex: 1,
   },
   modalHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: 16,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: "#E0E0E0",
   },
   closeButton: {
     padding: 8,
   },
   modalTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   saveButton: {
     padding: 8,
@@ -530,12 +587,12 @@ const styles = StyleSheet.create({
   },
   cancelText: {
     fontSize: 16,
-    color: '#007AFF',
+    color: "#007AFF",
   },
   saveText: {
     fontSize: 16,
-    color: '#007AFF',
-    fontWeight: '600',
+    color: "#007AFF",
+    fontWeight: "600",
   },
   placeholder: {
     width: 40,
@@ -548,23 +605,23 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 8,
   },
   textInput: {
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: "#E0E0E0",
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
   },
   textArea: {
     height: 80,
-    textAlignVertical: 'top',
+    textAlignVertical: "top",
   },
   descriptionSection: {
     padding: 16,
-    backgroundColor: 'rgba(0,0,0,0.05)',
+    backgroundColor: "rgba(0,0,0,0.05)",
   },
   descriptionText: {
     fontSize: 16,
@@ -574,45 +631,45 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 12,
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   addMemberButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   addMemberText: {
     marginLeft: 4,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   memberItem: {
     padding: 12,
     marginBottom: 8,
     borderRadius: 8,
-    backgroundColor: 'rgba(0,0,0,0.05)',
+    backgroundColor: "rgba(0,0,0,0.05)",
   },
   memberInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   avatar: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 12,
   },
   avatarText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
     fontSize: 14,
   },
   memberDetails: {
@@ -620,7 +677,7 @@ const styles = StyleSheet.create({
   },
   memberName: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   memberSubtitle: {
     fontSize: 14,
@@ -628,23 +685,24 @@ const styles = StyleSheet.create({
   },
   emptyMembers: {
     padding: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   contactItem: {
     padding: 16,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: "#E0E0E0",
   },
   contactInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   contactDetails: {
     flex: 1,
+    backgroundColor: "red",
   },
   contactName: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 2,
   },
   contactSubtitle: {

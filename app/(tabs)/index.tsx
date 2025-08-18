@@ -5,7 +5,7 @@ import { Colors } from "@/constants/Colors";
 import { useApp } from "@/context/AppContext";
 import { contactActions } from "@/lib/contactActions";
 import { Contact } from "@/types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   Modal,
@@ -29,9 +29,9 @@ export default function ContactsScreen() {
   } = useApp();
   const [showContactDetails, setShowContactDetails] = useState(false);
 
-  // useEffect(() => {
-  //   loadContacts();
-  // }, [loadContacts]);
+  useEffect(() => {
+    loadContacts();
+  }, []);
 
   const handleContactPress = (contact: Contact) => {
     selectContact(contact);
@@ -90,9 +90,6 @@ export default function ContactsScreen() {
         <View style={styles.contactDetails}>
           <ThemedText style={styles.contactName}>{item.fullName}</ThemedText>
           <ThemedText style={styles.contactSubtitle}>
-            {item.position}
-          </ThemedText>
-          <ThemedText style={styles.contactSubtitle}>
             {item.department}
           </ThemedText>
         </View>
@@ -118,7 +115,7 @@ export default function ContactsScreen() {
               style={styles.closeButton}
               onPress={() => setShowContactDetails(false)}
             >
-              <IconSymbol name="xmark" size={24} color={Colors["light"].text} />
+              <IconSymbol name="xmark" size={24} color={Colors["light"].tint} />
             </TouchableOpacity>
             <ThemedText style={styles.modalTitle}>Contact Details</ThemedText>
             <View style={styles.placeholder} />
@@ -284,18 +281,6 @@ export default function ContactsScreen() {
       </Modal>
     );
   };
-
-  // if (!state.isAuthenticated) {
-  //   return (
-  //     <ThemedView style={styles.container}>
-  //       <View style={styles.loginPrompt}>
-  //         <ThemedText style={styles.loginPromptText}>
-  //           Please login to view contacts
-  //         </ThemedText>
-  //       </View>
-  //     </ThemedView>
-  //   );
-  // }
 
   return (
     <ThemedView style={styles.container}>

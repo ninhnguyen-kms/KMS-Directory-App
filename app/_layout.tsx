@@ -1,27 +1,41 @@
-import { useFonts } from "expo-font";
+import LoginScreen from "@/components/LoginScreen";
+import { AppProvider } from "@/context/AppContext";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { ActivityIndicator, View } from "react-native";
 import "react-native-reanimated";
 
-import { AppProvider } from "@/context/AppContext";
+function AppContent() {
+  const { isAuthenticated, loading } = useAuth();
 
-export default function RootLayout() {
-  const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-  });
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#007AFF" />
+      </View>
+    );
+  }
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
+  if (!isAuthenticated) {
+    return <LoginScreen />;
   }
 
   return (
-    <AppProvider>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </AppProvider>
+    <Stack>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="+not-found" />
+    </Stack>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <AppProvider>
+        <AppContent />
+        <StatusBar style="auto" />
+      </AppProvider>
+    </AuthProvider>
   );
 }
