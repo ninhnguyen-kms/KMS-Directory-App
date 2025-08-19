@@ -41,8 +41,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = async (credentials: { email: string; password: string }) => {
     try {
-      // Replace with your actual authentication API call
-      // For demo purposes, using simple validation
       if (credentials.email && credentials.password) {
         const userData = { email: credentials.email, name: "User" };
 

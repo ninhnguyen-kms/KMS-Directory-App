@@ -4,7 +4,6 @@ import * as Sharing from 'expo-sharing';
 import { Alert, Linking, Platform } from 'react-native';
 
 class ContactActionsService {
-  // Share contact functionality
   async shareContact(contact: Contact): Promise<void> {
     try {
       const contactInfo = this.formatContactForSharing(contact);
